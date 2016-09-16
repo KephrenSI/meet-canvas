@@ -1,95 +1,119 @@
-// hepl-mmi/meet-canvas - exo-seven
+"use strict";
 
-( function( CanvApp ) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    "use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    var oApp;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    CanvApp.prototype.setup = function() {
-        var self = this,
-            oSourceImage = new Image();
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-        oSourceImage.addEventListener( "load", function() {
-            self.context.drawImage( this, 0, 0 );
+(function (CanvApp) {
 
-            self._originalImageData = self.context.getImageData( 0, 0, self.width, self.height );
-        } );
-        oSourceImage.src = "../_shared/big-kitten.jpg";
+    var oApp = void 0;
 
-        [ "no-red", "negative", "bw", "reset" ].forEach( function( sId ) {
-            document.getElementById( sId ).addEventListener( "click", oApp.buttonClicked.bind( oApp ) );
-        } );
-    };
+    var MyCanvApp = function (_CanvApp) {
+        _inherits(MyCanvApp, _CanvApp);
 
-    CanvApp.prototype.buttonClicked = function( oEvent ) {
-        var oImageData,
-            oModifiedImageData;
+        function MyCanvApp() {
+            _classCallCheck(this, MyCanvApp);
 
-        oEvent.preventDefault();
-
-        oImageData = this.context.getImageData( 0, 0, this.width, this.height );
-
-        switch ( oEvent.target.id ) {
-            case "no-red":
-                oModifiedImageData = this.applyNoRedFilter( oImageData );
-                break;
-            case "negative":
-                oModifiedImageData = this.applyNegativeFilter( oImageData );
-                break;
-            case "bw":
-                oModifiedImageData = this.applyBlackAndWhiteFilter( oImageData );
-                break;
-            case "reset":
-            default:
-                oModifiedImageData = this._originalImageData;
-                break;
+            return _possibleConstructorReturn(this, (MyCanvApp.__proto__ || Object.getPrototypeOf(MyCanvApp)).apply(this, arguments));
         }
 
-        this.context.putImageData( oModifiedImageData, 0, 0 );
-    };
+        _createClass(MyCanvApp, [{
+            key: "setup",
+            value: function setup() {
+                var _this2 = this;
 
-    CanvApp.prototype.applyNoRedFilter = function( oImageData ) {
-        var i = 0;
+                var oSourceImage = new Image();
 
-        // oImageData.data is an array of red, green, blue & alpha value for each pixel of our canvas.
-        // We use this do-while loop to jump by four cases at each step.
-        do {
-            oImageData.data[ i ] = 0;
-        } while ( ( oImageData.data[ i += 4 ] ) != null );
+                oSourceImage.addEventListener("load", function () {
+                    _this2.context.drawImage(oSourceImage, 0, 0);
 
-        return oImageData;
-    };
+                    _this2._originalImageData = _this2.context.getImageData(0, 0, _this2.width, _this2.height);
+                });
+                oSourceImage.src = "../_shared/big-kitten.jpg";
 
-    CanvApp.prototype.applyNegativeFilter = function( oImageData ) {
-        var i = 0;
+                var _arr = ["no-red", "negative", "bw", "reset"];
+                for (var _i = 0; _i < _arr.length; _i++) {
+                    var sFilter = _arr[_i];
+                    document.getElementById(sFilter).addEventListener("click", oApp.buttonClicked.bind(oApp));
+                }
+            }
+        }, {
+            key: "buttonClicked",
+            value: function buttonClicked(oEvent) {
+                var oImageData = void 0,
+                    oModifiedImageData = void 0;
 
-        do {
-            oImageData.data[ i ] = 255 - oImageData.data[ i ]; // red
-            oImageData.data[ i + 1 ] = 255 - oImageData.data[ i + 1 ]; // green
-            oImageData.data[ i + 2 ] = 255 - oImageData.data[ i + 2 ]; // blue
-        } while ( ( oImageData.data[ i += 4 ] ) != null );
+                oEvent.preventDefault();
 
-        return oImageData;
-    };
+                oImageData = this.context.getImageData(0, 0, this.width, this.height);
 
-    CanvApp.prototype.applyBlackAndWhiteFilter = function( oImageData ) {
-        var i = 0,
-            iLuminance;
+                switch (oEvent.target.id) {
+                    case "no-red":
+                        oModifiedImageData = this.applyNoRedFilter(oImageData);
+                        break;
+                    case "negative":
+                        oModifiedImageData = this.applyNegativeFilter(oImageData);
+                        break;
+                    case "bw":
+                        oModifiedImageData = this.applyBlackAndWhiteFilter(oImageData);
+                        break;
+                    case "reset":
+                    default:
+                        oModifiedImageData = this._originalImageData;
+                        break;
+                }
 
-        do {
-            // cf. https://fr.wikipedia.org/wiki/Luminance#Matri.C3.A7age
-            iLuminance = oImageData.data[ i ] * 0.299 + oImageData.data[ i + 1 ] * 0.587 + oImageData.data[ i + 2 ] * 0.114;
-            oImageData.data[ i ] = iLuminance; // red
-            oImageData.data[ i + 1 ] = iLuminance; // green
-            oImageData.data[ i + 2 ] = iLuminance; // blue
-        } while ( ( oImageData.data[ i += 4 ] ) != null );
+                this.context.putImageData(oModifiedImageData, 0, 0);
+            }
+        }, {
+            key: "applyNoRedFilter",
+            value: function applyNoRedFilter(oImageData) {
+                var i = 0;
 
-        return oImageData;
-    };
+                do {
+                    oImageData.data[i] = 0;
+                } while (oImageData.data[i += 4] != null);
 
-    oApp = new CanvApp( "#my-canvas" );
+                return oImageData;
+            }
+        }, {
+            key: "applyNegativeFilter",
+            value: function applyNegativeFilter(oImageData) {
+                var i = 0;
+
+                do {
+                    oImageData.data[i] = 255 - oImageData.data[i];
+                    oImageData.data[i + 1] = 255 - oImageData.data[i + 1];
+                    oImageData.data[i + 2] = 255 - oImageData.data[i + 2];
+                } while (oImageData.data[i += 4] != null);
+
+                return oImageData;
+            }
+        }, {
+            key: "applyBlackAndWhiteFilter",
+            value: function applyBlackAndWhiteFilter(oImageData) {
+                var i = 0;
+
+                do {
+                    var iLuminance = oImageData.data[i] * 0.299 + oImageData.data[i + 1] * 0.587 + oImageData.data[i + 2] * 0.114;
+
+                    oImageData.data[i] = iLuminance;
+                    oImageData.data[i + 1] = iLuminance;
+                    oImageData.data[i + 2] = iLuminance;
+                } while (oImageData.data[i += 4] != null);
+
+                return oImageData;
+            }
+        }]);
+
+        return MyCanvApp;
+    }(CanvApp);
+
+    oApp = new MyCanvApp("#my-canvas");
 
     oApp.setup();
-
-} )( window.CanvApp );
+})(window.CanvApp);

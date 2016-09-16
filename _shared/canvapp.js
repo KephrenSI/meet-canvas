@@ -1,21 +1,21 @@
-// hepl-mmi/meet-canvas - canvapp
+"use strict";
 
-( function() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    "use strict";
+(function () {
+    var CanvApp = function CanvApp(sCanvasSelector) {
+        _classCallCheck(this, CanvApp);
 
-    var CanvApp;
+        this.canvas = document.querySelector(sCanvasSelector);
+        if (!window.isCanvasSupported(this.canvas)) {
+            console.error("Canvas isn't supported!");
 
-    CanvApp = function( sCanvasSelector ) {
-        this.canvas = document.querySelector( sCanvasSelector );
-        if ( !window.isCanvasSupported( this.canvas ) ) {
-            return console.error( "Canvas isn't supported!" );
+            return;
         }
-        this.context = this.canvas.getContext( "2d" );
+        this.context = this.canvas.getContext("2d");
         this.width = this.canvas.width;
         this.height = this.canvas.height;
     };
 
     window.CanvApp = CanvApp;
-
-} )();
+})();

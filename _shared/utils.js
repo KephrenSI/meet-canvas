@@ -1,15 +1,8 @@
-// hepl-mmi/meet-canvas - utils
+"use strict";
 
-( function() {
+(function () {
 
-    "use strict";
-
-    var _isCanvasSupported;
-
-    _isCanvasSupported = function( $canvasElt ) {
+    window.isCanvasSupported = function ($canvasElt) {
         return !!$canvasElt.getContext;
     };
-
-    window.isCanvasSupported = _isCanvasSupported;
-
-} )();
+})();

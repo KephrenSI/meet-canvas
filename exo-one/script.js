@@ -1,11 +1,9 @@
-// hepl-mmi/meet-canvas - exo-one
+"use strict";
 
-( function() {
+(function () {
 
-    "use strict";
-
-    var oApp,
-        _isCanvasSupported;
+    var oApp = void 0,
+        fIsCanvasSupported = void 0;
 
     oApp = {
         "canvas": null,
@@ -14,62 +12,67 @@
         "height": null
     };
 
-    _isCanvasSupported = function( $canvasElt ) {
+    fIsCanvasSupported = function fIsCanvasSupported($canvasElt) {
         return !!$canvasElt.getContext;
     };
 
-    oApp.setup = function() {
-        this.canvas = document.querySelector( "#my-canvas" );
-        if ( !_isCanvasSupported( this.canvas ) ) {
-            return console.error( "Canvas isn't supported!" );
+    oApp.setup = function () {
+        this.canvas = document.querySelector("#my-canvas");
+        if (!fIsCanvasSupported(this.canvas)) {
+            console.error("Canvas isn't supported!");
+
+            return;
         }
-        this.context = this.canvas.getContext( "2d" );
+        this.context = this.canvas.getContext("2d");
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.draw();
     };
 
-    oApp.drawSquares = function() {
-        var oContext = this.context;
+    oApp.drawSquares = function () {
+        var oContext = this.context,
+            iHalfWidth = this.width / 2,
+            iHalfHeight = this.height / 2;
 
         oContext.fillStyle = "#ffffaa";
-        oContext.fillRect( 0, 0, this.width / 2, this.height / 2 );
+        oContext.fillRect(0, 0, iHalfWidth, iHalfHeight);
         oContext.fillStyle = "#aaffff";
-        oContext.fillRect( this.width / 2, 0, this.width / 2, this.height / 2 );
+        oContext.fillRect(iHalfWidth, 0, iHalfWidth, iHalfHeight);
         oContext.fillStyle = "#ffaaaa";
-        oContext.fillRect( 0, this.height / 2, this.width / 2, this.height / 2 );
+        oContext.fillRect(0, iHalfHeight, iHalfWidth, iHalfHeight);
         oContext.fillStyle = "#aaffaa";
-        oContext.fillRect( this.width / 2, this.height / 2, this.width / 2, this.height / 2 );
+        oContext.fillRect(iHalfWidth, iHalfHeight, iHalfWidth, iHalfHeight);
     };
 
-    oApp.drawText = function() {
+    oApp.drawText = function () {
         var oContext = this.context;
 
         oContext.font = "100 24px Helvetica, sans-serif";
         oContext.fillStyle = "black";
         oContext.textBaseline = "top";
-        oContext.fillText( "Javascript, kittens & psycho colors FTW", 20, 20 );
+        oContext.fillText("Javascript, kittens & psycho colors FTW", 20, 20);
     };
 
-    oApp.drawImage = function() {
-        var self = this,
-            oContext = self.context,
+    oApp.drawImage = function () {
+        var _this = this;
+
+        var oContext = this.context,
             oImage = new Image();
 
-        oImage.addEventListener( "load", function() {
-            oContext.drawImage( this, ( self.width - this.width ) / 2, ( self.height - this.height ) / 2 );
-        } );
+        oImage.addEventListener("load", function () {
+            return oContext.drawImage(oImage, (_this.width - oImage.width) / 2, (_this.height - oImage.height) / 2);
+        });
         oImage.src = "../_shared/small-kitten.png";
     };
 
-    oApp.drawStroke = function() {
+    oApp.drawStroke = function () {
         var oContext = this.context;
 
         oContext.strokeStyle = "red";
-        oContext.strokeRect( 10, 10, this.width - 20, this.height - 20 );
+        oContext.strokeRect(10, 10, this.width - 20, this.height - 20);
     };
 
-    oApp.draw = function() {
+    oApp.draw = function () {
         this.drawSquares();
         this.drawText();
         this.drawImage();
@@ -77,5 +80,4 @@
     };
 
     oApp.setup();
-
-} )();
+})();
