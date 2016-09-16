@@ -14,6 +14,12 @@ Ces fichiers servent de base d'exercice pour le cours de découverte de la balis
 
 Le cours est réparti en 7 exercices distincts, dans leurs dossiers propres. Le dossier `_shared` contient les éléments communs à chaque exercices (feuilles de styles, images…). Un workflow Grunt basique est inclus, pour vérifier les fichiers javascript avec **eslint**.
 
+## Branche `completed-es2015`
+
+Afin de vous permettre d'avoir une série de références de script en **ES2015**, j'ai créé une branche supplémentaire, nommée `completed-es2015`, qui contient les versions corrigées, mais écrites en suivant la nouvelle norme JavaScript ES2015.  
+Comme expliqué au cours de [RIA](https://github.com/hepl-ria), ces scripts ont besoin d'être convertis (_transpilés_) vers une plus vieille version de javascript pour fonctionner dans un navigateur. J'ai modifié le workflow **grunt** pour y inclure une tâche de compilation _via_ [babeljs](https://babeljs.io). Pour chaque exercice, vous aurez donc un fichier `script.js`, qui est la version _compilée_ et utilisée par le navigateur, et un fichier `script.es2015.js`, utilisant la nouvelle norme.  
+J'en ai aussi profiter pour ajouter quelques règles propres à **ES2015** dans le fichier `.eslintrc.json`.
+
 ## Détail des exercices
 
 ### `exo-one`
